@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="sidebarFragment">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-car"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3" th:text="#{main.sidebar.title}">Mozates</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/dashboard') ? 'active':''}">
+            <a class="nav-link" th:href="@{/dashboard}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span th:text="#{main.sidebar.dashboard}">Dashboard</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <!--        <div class="sidebar-heading">-->
+        <!--            Interface-->
+        <!--        </div>-->
+
+        <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/enf') ? 'active':''}">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTfcEnf" aria-expanded="true" aria-controls="collapseTfcEnf">
+                <i class="fas fa-fw fa-camera"></i>
+                <span th:text="#{main.sidebar.trafficEnforcementManagement}">교통단속 관리</span>
+            </a>
+            <div id="collapseTfcEnf" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" th:classappend="${#request.getServletPath().startsWith('/enf') ? 'show':''}">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/enf/searchDriver') ? 'active':''}" th:href="@{/enf/searchDriver}" th:text="#{main.sidebar.searchDriver}">운전자 조회</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/enf/searchCar') ? 'active':''}" th:href="@{/enf/searchCar}" th:text="#{main.sidebar.subsearchCar}">차량 조회</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/enf/info') ? 'active':''}" th:href="@{/enf/infoList}" th:text="#{main.sidebar.subtrafficEnforcementInformationManagement}">교통단속 정보관리</a>
+<!-- 	                   <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/enf/law') ? 'active':''}" th:href="@{/enf/lawList}" th:text="#{main.sidebar.subtrafficEnforcementLawManagement}">교통단속 법률관리</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/enf/log') ? 'active':''}" th:href="@{/enf/logList}" th:text="#{main.sidebar.subtrafficEnforcementLog}">교통단속 로그</a> -->
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/acdnt') ? 'active':''}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccident" aria-expanded="true" aria-controls="collapseAccident">
+                <i class="fas fa-fw fa-ambulance"></i>
+                <span th:text="#{main.sidebar.trafficAccidentManagement}">교통사고 관리</span>
+            </a>
+            <div id="collapseAccident" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" th:classappend="${#request.getServletPath().startsWith('/acdnt') ? 'show':''}">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/acdnt/mng') ? 'active':''}" th:href="@{/acdnt/mngList}" th:text="#{main.sidebar.subtrafficAccidentManagement}">교통사고 관리</a>
+<!--                      <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/acdnt/logList') ? 'active':''}" th:href="@{/acdnt/logList}" th:text="#{main.sidebar.subtrafficAccidentLog}">교통사고 로그</a>-->
+                </div>
+            </div>
+        </li>
+
+<!--          <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/eqp') ? 'active':''}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEquip" aria-expanded="true" aria-controls="collapseEquip">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span th:text="#{main.sidebar.enforcementEquipmentManagement}">단속장비 관리</span>
+            </a>
+            <div id="collapseEquip" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" th:classappend="${#request.getServletPath().startsWith('/eqp') ? 'show':''}">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/eqp/mng') ? 'active':''}" th:href="@{/eqp/mngList}" th:text="#{main.sidebar.subinstallationEqupmentManagement}">설치장비 관리</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/eqp/logList') ? 'active':''}" th:href="@{/eqp/logList}" th:text="#{main.sidebar.submobileDeviceLog}">휴대장비 로그</a>
+                </div>
+            </div>
+        </li>-->
+
+<!--        <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/penalty') ? 'active':''}">-->
+<!--            <a class="nav-link" th:href="@{/penalty/mngList}">-->
+<!--                <i class="fas fa-fw fa-money-bill"></i>-->
+<!--                <span>범칙금 관리</span>-->
+<!--            </a>-->
+
+<!--        </li>-->
+
+          <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/penalty') ? 'active':''}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePenalty" aria-expanded="true" aria-controls="collapsePenalty">
+                <i class="fas fa-fw fa-user"></i>
+                <span th:text="#{main.sidebar.subfineManagement}">범칙금 관리</span>
+            </a>
+            <div id="collapsePenalty" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" th:classappend="${#request.getServletPath().startsWith('/penalty') ? 'show':''}">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/penalty') ? 'active':''}" th:href="@{/penalty/mngList}" th:text="#{main.sidebar.subfineManagement}">범칙금 관리</a>
+                </div>
+            </div>
+        </li>
+
+<!--          <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/user') ? 'active':''}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminMng" aria-expanded="true" aria-controls="collapseAdminMng">
+                <i class="fas fa-fw fa-user"></i>
+                <span th:text="#{main.sidebar.managerManagement}">관리자 관리</span>
+            </a>
+            <div id="collapseAdminMng" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" th:classappend="${#request.getServletPath().startsWith('/user') ? 'show':''}">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/user/user') ? 'active':''}" th:href="@{/user/userList}" th:text="#{main.sidebar.subadminList}">관리자 목록</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/user/newUserRegist') ? 'active':''}" th:href="@{/user/newUserRegist}" th:text="#{main.sidebar.subnewRegistration}">신규 등록</a>
+                </div>
+            </div>
+        </li>-->
+
+<!--         <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/portal') ? 'active':''}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGovPortal" aria-expanded="true" aria-controls="collapseGovPortal">
+                <i class="fas fa-fw fa-sitemap"></i>
+                <span th:text="#{main.sidebar.governmentPortalManagement}">정부포털 관리</span>
+            </a>
+            <div id="collapseGovPortal" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" th:classappend="${#request.getServletPath().startsWith('/portal') ? 'show':''}">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/portal/notice') ? 'active':''}" th:href="@{/portal/noticeList}" th:text="#{main.sidebar.subAnnouncement}">공지사항</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/portal/faq') ? 'active':''}" th:href="@{/portal/faqList}" th:text="#{main.sidebar.subFaq}">FAQ</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/portal/objection') ? 'active':''}" th:href="@{/portal/objectionList}" th:text="#{main.sidebar.subObjection}">이의제기</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/portal/complaint') ? 'active':''}" th:href="@{/portal/complaintList}" th:text="#{main.sidebar.subComplaint}">불만사항</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/portal/penaltyPlace') ? 'active':''}" th:href="@{/portal/penaltyPlaceList}" th:text="#{main.sidebar.subPenaltyLevelPayment}">범칙금 납부처</a>
+                </div>
+            </div>
+        </li>-->
+
+        <!-- <li class="nav-item" th:classappend="${#request.getServletPath().startsWith('/stat') ? 'active':''}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistic" aria-expanded="true" aria-controls="collapseStatistic">
+                <i class="fas fa-fw fa-chart-bar"></i>
+                <span th:text="#{main.sidebar.subtrafficAccidentLog}">통계 관리</span>
+            </a>
+            <div id="collapseStatistic" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" th:classappend="${#request.getServletPath().startsWith('/stat') ? 'show':''}">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/stat/enforceChart') ? 'active':''}" th:href="@{/stat/enforceChart}" th:text="#{main.sidebar.subtrafficEnforcementStatistics}">교통단속 통계</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/stat/penaltyChart') ? 'active':''}" th:href="@{/stat/penaltyChart}" th:text="#{main.sidebar.subPanaltyStatistics}">범칙금 통계</a>
+                    <a class="collapse-item" th:classappend="${#request.getServletPath().startsWith('/stat/accidentChart') ? 'active':''}" th:href="@{/stat/accidentChart}" th:text="#{main.sidebar.subtrafficAccidentStatistics}">교통사고 통계</a>
+                </div>
+            </div>
+        </li>-->
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+
+    </ul>
+    <!-- End of Sidebar -->
+
+</th:block>
+
+</html>

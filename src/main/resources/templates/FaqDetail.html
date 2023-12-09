@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="content">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 th:text="#{potal.faq.title.detail}" class="h3 mb-4 text-gray-800">FAQ 상세</h1>
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 th:text="#{potal.faq.detail}" class="m-0 font-weight-bold text-primary" >상세</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <colgroup>
+                                    <col width="20%">
+                                    <col width="30%">
+                                    <col width="20%">
+                                    <col width="30%">
+
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th th:text="#{potal.faq.title}">제목</th>
+                                    <td th:text="${faqVO.postTitle}"></td>
+                                    <th th:text="#{potal.faq.category}">카테고리</th>
+                                    <td th:text="${faqVO.cdNm}"></td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{potal.faq.writer}">등록자</th>
+                                    <td th:text="${faqVO.wrtrId}"></td>
+                                    <th th:text="#{potal.faq.registDate}">등록일</th>
+                                    <td th:text="${faqVO.regDt}"></td>
+                                </tr>
+                                 <tr>
+                                    <th th:text="#{potal.faq.priority}">우선순위</th>
+                                    <td colspan="3" th:text="${faqVO.faqSeq}"></td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{potal.faq.content}">내용</th>
+                                    <td colspan="3" th:text="${faqVO.postContent}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button th:text="#{penalty.common.listBack}" type="button" id="btnGoList" class="btn btn-outline-secondary" th:onclick="|location.href='@{/portal/faqList}'|">목록</button>
+                            <button th:text="#{potal.common.modify}" type="button" id="btnRegist" class="btn btn-outline-warning" th:onclick="'location.href=\''+@{/portal/faqModify(faqIdx=${faqVO.faqIdx})}+'\''">수정</button>
+                            <button th:text="#{potal.common.delete}" type="button" id="btnDelete" class="btn btn-outline-danger">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+
+
+</th:block>
+</html>
+
+<script th:inline="javascript">
+
+    $("#btnDelete").click(function () {
+        if(confirm("삭제하시겠습니까")){
+
+            var idx = [[${faqVO.faqIdx}]];
+            $.ajax({
+                url: /*[[@{/portal/faqDeleteAjax}]]*/ "/portal/faqDeleteAjax",
+                type: "post",
+                data: {"faqIdx":idx},
+                success: function(data){
+                    if(data.code == "1"){
+                        alert("삭제했습니다.");
+                        location.href = /*[[@{/portal/faqList}]]*/ '/portal/faqList';
+                    }
+                }
+            });
+        }else{
+            return;
+        }
+    });
+
+</script>

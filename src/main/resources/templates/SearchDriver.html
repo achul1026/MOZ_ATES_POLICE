@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="content">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 th:text="#{enforcement.driver.search.title}" class="h3 mb-4 text-gray-800">운전자 조회</h1>
+        
+
+        <div class="row">
+
+
+            <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 th:text="#{enforcement.driver.search.searchOp}" class="m-0 font-weight-bold text-primary">검색조건</h6>
+                    </div>
+                    <div class="card-body">
+                        <form id="frmDriverSearch" th:action="@{/enf/searchDriver}" method="get">
+                            <label th:text="#{enforcement.driver.search.name}">이름</label>
+                            <input class="form-control col-lg-3" id="txtName" name="name" type="text" th:value="${enfSearchVO.name}">
+                            &nbsp;&nbsp;&nbsp;
+                            <label th:text="#{enforcement.driver.search.phNum}">전화번호</label>
+                            <input class="form-control col-lg-3" id="txtPhone" name="phone" type="text" th:value="${enfSearchVO.phone}">
+                            &nbsp;&nbsp;&nbsp;
+                            <button type="button" id="btnSearch" class="btn btn-outline-primary" th:text="#{enforcement.driver.search.check}">조회</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <th:block th:if="${not #strings.isEmpty(enfSearchVO.name) && not #strings.isEmpty(driverDetail.name)}">
+            <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" th:text="#{enforcement.driver.search.searchTitle}">운전자 상세정보</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <colgroup>
+                                    <col width="20%">
+                                    <col width="30%">
+                                    <col width="20%">
+                                    <col width="30%">
+
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th th:text="#{enforcement.driver.search.name}">이름</th>
+                                    <td th:text="${driverDetail.name}"></td>
+                                    <th th:text="#{enforcement.driver.search.phNum}">전화번호</th>
+                                    <td th:text="${driverDetail.phone}"></td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{enforcement.driver.search.birth}">생년월일(나이)</th>
+                                    <td th:text="${driverDetail.birth}"></td>
+                                    <th th:text="#{enforcement.driver.search.sex}">성별</th>
+                                    <td th:text="${driverDetail.sex}"></td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{enforcement.driver.search.driverLicense}">면허증번호</th>
+                                    <td th:text="${driverDetail.driverLicense}"></td>
+                                    <th th:text="#{enforcement.driver.search.email}">이메일</th>
+                                    <td th:text="${driverDetail.email}"></td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{enforcement.driver.search.address}">주소</th>
+                                    <td colspan="3" th:text="${driverDetail.address}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </th:block>
+
+            <th:block th:if="${not #strings.isEmpty(enfSearchVO.name) && #strings.isEmpty(driverDetail.name)}">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary" th:text="#{enforcement.driver.search.searchTitle}">운전자 상세정보</h6>
+                        </div>
+                        <div class="card-body">
+                            <p style="text-align: center;" th:text="#{enforcement.driver.search.content}">검색 결과가 없습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+
+
+        </div>
+
+    </div>
+
+
+    <!-- Alert Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!--                <div class="modal-header">-->
+                <!--                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>-->
+                <!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                <!--                        <span aria-hidden="true">&times;</span>-->
+                <!--                    </button>-->
+                <!--                </div>-->
+                <div class="modal-body" id="divModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnModalClose" th:text="#{enforcement.driver.search.closeButton}">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</html>
+<script>
+
+    $(function (){
+        $("#btnModalClose").click(function () {
+            $("#exampleModal").modal('hide');
+            setTimeout(function () {
+                $("#txtName").val('').focus();
+                // $("#txtName").focus();
+            },0)
+        })
+    })
+
+    $("#btnSearch").click(function () {
+
+
+        if($.trim($("#txtName").val())==''){
+
+            $("#divModalBody").text("이름을 입력해주세요.");
+            $("#exampleModal").modal('show');
+
+
+            return false;
+        }
+        if($.trim($("#txtPhone").val())==''){
+            alert("전화번호를 입력해주세요.");
+            $("#txtPhone").focus();
+            return false;
+        }
+        $("#frmDriverSearch").submit();
+    })
+
+</script>

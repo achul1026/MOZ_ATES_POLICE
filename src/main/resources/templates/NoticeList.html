@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="content">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 th:text="#{potal.notice.title.notice}" class="h3 mb-4 text-gray-800">공지사항</h1>
+
+        <div class="row">
+
+
+            <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 th:text= "#{penalty.common.searchCon}"  class="m-0 font-weight-bold text-primary">검색조건</h6>
+                    </div>
+                    <div class="card-body">
+                        <form id="frmSearch">
+                            <input type="hidden" id="hdnStart" name="start" th:value="${noticeVO.start}">
+                            <label th:text= "#{penalty.common.startDate}">시작일</label>
+                            <input class="form-control col-lg-2" id="sDate" name="sDate" type="date" th:value="${noticeVO.getSDate()}">
+                            &nbsp;&nbsp;&nbsp;
+                            <label th:text= "#{penalty.common.endDate}">종료일</label>
+                            <input class="form-control col-lg-2" id="eDate" name="eDate" type="date" th:value="${noticeVO.getEDate()}">
+                            &nbsp;&nbsp;&nbsp;
+                            <label>
+                                <select class="form-control" name="searchType">
+                                    <option th:text= "#{penalty.common.allCon}"  value="all" th:selected="${noticeVO.searchType == 'all'}">전체</option>
+                                    <option value="boardTitle" th:selected="${noticeVO.searchType == 'boardTitle'}">제목</option>
+                                    <option value="oprtrId" th:selected="${noticeVO.searchType == 'oprtrId'}">작성자</option>
+                                </select>
+                            </label>
+                            <input class="form-control col-lg-3" name="searchTxt" type="text" th:value="${noticeVO.searchTxt}" >
+                            &nbsp;&nbsp;&nbsp;
+
+                            <button th:text= "#{penalty.common.search}"  type="button" id="btnSearch" class="btn btn-outline-primary">조회</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 th:text="#{potal.notice.acList}" class="m-0 font-weight-bold text-primary" style="display: inline;">교통사고 리스트</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered dataTable" id="tblList" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 20px;">No.</th>
+                                                <th th:text="#{potal.notice.common.title}" class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 130px;">제목</th>
+                                                <th th:text="#{potal.notice.common.writer}" class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 30px;">작성자</th>
+                                                <th th:text="#{potal.notice.common.date}" class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 67px;">작성일시</th>
+                                                <th th:text="#{potal.notice.common.readCnt}" class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 20px;">조회수</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_info">
+                                        <button th:text="#{potal.notice.regist}" type="button" id="btnRegist" class="btn btn-outline-success" th:onclick="|location.href='@{/portal/noticeRegist}'|">공지사항 등록</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</th:block>
+</html>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    $(function (){
+
+        $('#tblList').DataTable({
+            "destroy" : true,
+            "processing" : false,
+            "serverSide" : true,
+            "paging" : true,
+            "searching" : false,
+            "ordering" : false,
+            "lengthChange" : false,
+            "displayStart": /*[[ ${noticeVO.start} ]]*/ 10,
+            "language" : {
+                "emptyTable" : "조회 결과가 없습니다."
+            },
+            initComplete: function () {
+                $(".paginate_button").off("click");
+            },
+            ajax : {
+                url : /*[[@{/portal/noticeListAjax}]]*/ "/portal/noticeListAjax",
+                method : "post",
+                data : function(d){
+                    var frmData = $("#frmSearch").serializeArray();
+                    $.each(frmData,function (key, val) {
+                        d[val.name] = val.value;
+                    })
+                }
+            },
+            columns : [
+                {
+                    render : function (data, type, row, meta) {
+                        return meta.settings._iRecordsTotal-meta.settings._iDisplayStart-meta.row;
+                    }
+                }
+                , {
+                    data: 'boardTitle',
+                    render : function(data, type, row, meta) {
+                        return '<a href="javascript:;" onclick="goDetail(\''+row.boardIdx+'\')">' + data + '</a>';
+                    }
+                }
+                , { data: 'oprtrId' }
+                , { data: 'crDt' }
+                , { data: 'viewCnt' }
+            ]
+        })
+
+    })
+
+
+    function goDetail(idx){
+        var baseUrl = /*[[@{/portal/noticeDetail}]]*/ '';
+        window.location.href=baseUrl+"?boardIdx="+idx;
+    }
+
+    /*]]>*/
+
+
+</script>
